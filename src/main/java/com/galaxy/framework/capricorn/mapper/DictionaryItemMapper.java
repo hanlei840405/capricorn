@@ -1,7 +1,9 @@
 package com.galaxy.framework.capricorn.mapper;
 
 import com.galaxy.framework.capricorn.entity.DictionaryItem;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface DictionaryItemMapper {
     int deleteByPrimaryKey(Long id);
 

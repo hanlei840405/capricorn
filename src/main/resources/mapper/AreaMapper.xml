@@ -48,8 +48,8 @@
         created, modifier, modified, version
     </sql>
     <sql id="Relation_Column_List">
-        t1.id, t1.code, t1.name, t1.acreage, t1.height, t1.floor_code, t1.user_code, t1.remark, t1.status, t1.creator,
-        t1.created, t1.modifier, t1.modified, t1.version, t2.name as floor_name, t2.building_code, t3.name as building_name
+        t1.id, t1.code, t1.name, t1.acreage, t1.height, t1.floor_code, t1.user_code, t1.remark, t1.status, t1.creator, t1.created,
+        t1.modifier, t1.modified, t1.version, t2.code as floor_code, t2.name as floor_name, t3.code as building_code, t3.name as building_name
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select

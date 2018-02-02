@@ -1,178 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.galaxy.framework.capricorn.mapper.BuildingMapper">
-  <resultMap id="BaseResultMap" type="com.galaxy.framework.capricorn.entity.Building">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="acreage" jdbcType="DECIMAL" property="acreage" />
-    <result column="height" jdbcType="DECIMAL" property="height" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="created" jdbcType="TIMESTAMP" property="created" />
-    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
-    <result column="version" jdbcType="TINYINT" property="version" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, code, name, address, acreage, height, remark, status, creator, created, modifier, 
-    modified, version
+    <resultMap id="BaseResultMap" type="com.galaxy.framework.capricorn.entity.Building">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="location_code" jdbcType="VARCHAR" property="locationCode"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="acreage" jdbcType="DECIMAL" property="acreage"/>
+        <result column="height" jdbcType="DECIMAL" property="height"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
+        <result column="modified" jdbcType="TIMESTAMP" property="modified"/>
+        <result column="version" jdbcType="TINYINT" property="version"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, code, name, location_code, address, acreage, height, remark, status, creator,
+    created, modifier, modified, version
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from basic_building
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from basic_building
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from basic_building
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.galaxy.framework.capricorn.entity.Building">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into basic_building (code, name, address,
-      acreage, height, remark, 
-      status, creator, created, 
-      modifier, modified, version
-      )
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{acreage,jdbcType=DECIMAL}, #{height,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
-      #{modifier,jdbcType=VARCHAR}, #{modified,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.galaxy.framework.capricorn.entity.Building">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into basic_building
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="code != null">
-        code,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="address != null">
-        address,
-      </if>
-      <if test="acreage != null">
-        acreage,
-      </if>
-      <if test="height != null">
-        height,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="created != null">
-        created,
-      </if>
-      <if test="modifier != null">
-        modifier,
-      </if>
-      <if test="modified != null">
-        modified,
-      </if>
-      <if test="version != null">
-        version,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="acreage != null">
-        #{acreage,jdbcType=DECIMAL},
-      </if>
-      <if test="height != null">
-        #{height,jdbcType=DECIMAL},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="created != null">
-        #{created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifier != null">
-        #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="modified != null">
-        #{modified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null">
-        #{version,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.galaxy.framework.capricorn.entity.Building">
-    update basic_building
-    <set>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="acreage != null">
-        acreage = #{acreage,jdbcType=DECIMAL},
-      </if>
-      <if test="height != null">
-        height = #{height,jdbcType=DECIMAL},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="created != null">
-        created = #{created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifier != null">
-        modifier = #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="modified != null">
-        modified = #{modified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null">
-        version = #{version,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.galaxy.framework.capricorn.entity.Building">
+    <insert id="insert" parameterType="com.galaxy.framework.capricorn.entity.Building">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into basic_building (code, name, location_code,
+        address, acreage, height,
+        remark, status, creator,
+        created, modifier, modified,
+        version)
+        values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{locationCode,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR}, #{acreage,jdbcType=DECIMAL}, #{height,jdbcType=DECIMAL},
+        #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR},
+        #{created,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, #{modified,jdbcType=TIMESTAMP},
+        #{version,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.galaxy.framework.capricorn.entity.Building">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into basic_building
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                code,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="locationCode != null">
+                location_code,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="acreage != null">
+                acreage,
+            </if>
+            <if test="height != null">
+                height,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="locationCode != null">
+                #{locationCode,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="acreage != null">
+                #{acreage,jdbcType=DECIMAL},
+            </if>
+            <if test="height != null">
+                #{height,jdbcType=DECIMAL},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modified != null">
+                #{modified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.galaxy.framework.capricorn.entity.Building">
+        update basic_building
+        <set>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="locationCode != null">
+                location_code = #{locationCode,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="acreage != null">
+                acreage = #{acreage,jdbcType=DECIMAL},
+            </if>
+            <if test="height != null">
+                height = #{height,jdbcType=DECIMAL},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="created != null">
+                created = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modified != null">
+                modified = #{modified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.galaxy.framework.capricorn.entity.Building">
     update basic_building
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
+      location_code = #{locationCode,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       acreage = #{acreage,jdbcType=DECIMAL},
       height = #{height,jdbcType=DECIMAL},
@@ -185,4 +196,19 @@
       version = #{version,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <select id="selectByCode" parameterType="string" resultMap="RelationResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from basic_building
+        where code=#{code}
+    </select>
+    <select id="findAll" parameterMap="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from basic_building
+        where location_code=#{locationCode}
+        <if test="status">
+            and t1.status=#{status}
+        </if>
+    </select>
 </mapper>
