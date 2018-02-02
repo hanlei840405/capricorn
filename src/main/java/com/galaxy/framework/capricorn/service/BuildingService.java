@@ -35,7 +35,7 @@ public class BuildingService {
         return buildingMapper.findAll(search);
     }
 
-    public PageInfo<Building> pageInfo(Map<String, Object> search, int pageNo, int pageSize) {
+    public PageInfo<Building> page(Map<String, Object> search, int pageNo, int pageSize) {
         PageInfo<Building> pageInfo = PageHelper.startPage(pageNo, pageSize).doSelectPageInfo(() -> findAll(search));
         return pageInfo;
     }
@@ -54,9 +54,22 @@ public class BuildingService {
     }
 
     @Transactional
-    public void update(Building building) {
+    public int deleteByCode(String code) {
+        Building building = get(code);
         try {
-            buildingMapper.updateByPrimaryKey(building);
+            building.setStatus("删除");
+            return buildingMapper.updateByPrimaryKey(building);
+        } catch (Exception e) {
+            throw new UpdateException();
+        }
+    }
+
+    @Transactional
+    public int reuse(String code) {
+        Building building = get(code);
+        try {
+            building.setStatus("启用");
+            return buildingMapper.updateByPrimaryKey(building);
         } catch (Exception e) {
             throw new UpdateException();
         }
