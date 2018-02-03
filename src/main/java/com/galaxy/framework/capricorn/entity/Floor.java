@@ -1,5 +1,6 @@
 package com.galaxy.framework.capricorn.entity;
 
+import com.galaxy.framework.pisces.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @Setter
 @Getter
-public class Floor implements Serializable {
+public class Floor extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

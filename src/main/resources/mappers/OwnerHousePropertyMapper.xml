@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.framework.capricorn.mapper.OwnerHousePropertyMapper">
+  <resultMap id="BaseResultMap" type="com.galaxy.framework.capricorn.entity.OwnerHouseProperty">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="owner_code" jdbcType="VARCHAR" property="ownerCode" />
+    <result column="house_property_code" jdbcType="VARCHAR" property="housePropertyCode" />
+    <result column="forever" jdbcType="VARCHAR" property="forever" />
+    <result column="service_from" jdbcType="DATE" property="serviceFrom" />
+    <result column="service_to" jdbcType="DATE" property="serviceTo" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
+    <result column="version" jdbcType="TINYINT" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, owner_code, house_property_code, forever, service_from, service_to, status, creator, 
+    created, modifier, modified, version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from basic_owner_house_property
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from basic_owner_house_property
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.galaxy.framework.capricorn.entity.OwnerHouseProperty">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into basic_owner_house_property (owner_code, house_property_code, forever,
+      service_from, service_to, status, 
+      creator, created, modifier, 
+      modified, version)
+    values (#{ownerCode,jdbcType=VARCHAR}, #{housePropertyCode,jdbcType=VARCHAR}, #{forever,jdbcType=VARCHAR}, 
+      #{serviceFrom,jdbcType=DATE}, #{serviceTo,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
+      #{modified,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.galaxy.framework.capricorn.entity.OwnerHouseProperty">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into basic_owner_house_property
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ownerCode != null">
+        owner_code,
+      </if>
+      <if test="housePropertyCode != null">
+        house_property_code,
+      </if>
+      <if test="forever != null">
+        forever,
+      </if>
+      <if test="serviceFrom != null">
+        service_from,
+      </if>
+      <if test="serviceTo != null">
+        service_to,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modified != null">
+        modified,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ownerCode != null">
+        #{ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="housePropertyCode != null">
+        #{housePropertyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="forever != null">
+        #{forever,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceFrom != null">
+        #{serviceFrom,jdbcType=DATE},
+      </if>
+      <if test="serviceTo != null">
+        #{serviceTo,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modified != null">
+        #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.galaxy.framework.capricorn.entity.OwnerHouseProperty">
+    update basic_owner_house_property
+    <set>
+      <if test="ownerCode != null">
+        owner_code = #{ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="housePropertyCode != null">
+        house_property_code = #{housePropertyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="forever != null">
+        forever = #{forever,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceFrom != null">
+        service_from = #{serviceFrom,jdbcType=DATE},
+      </if>
+      <if test="serviceTo != null">
+        service_to = #{serviceTo,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modified != null">
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.galaxy.framework.capricorn.entity.OwnerHouseProperty">
+    update basic_owner_house_property
+    set owner_code = #{ownerCode,jdbcType=VARCHAR},
+      house_property_code = #{housePropertyCode,jdbcType=VARCHAR},
+      forever = #{forever,jdbcType=VARCHAR},
+      service_from = #{serviceFrom,jdbcType=DATE},
+      service_to = #{serviceTo,jdbcType=DATE},
+      status = #{status,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modified = #{modified,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

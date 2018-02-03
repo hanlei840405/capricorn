@@ -17,12 +17,14 @@ import org.springframework.context.annotation.Configuration;
 public class CacheConfig {
     @Value("${spring.redis.host: eureka-zuul}")
     private String host;
+    @Value("${spring.redis.port:6379}")
+    private String port;
 
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redissonClient() {
         Config config = new Config();
         SingleServerConfig singleServerConfig = config.useSingleServer();
-        singleServerConfig.setAddress("redis://" + host + ":6379");
+        singleServerConfig.setAddress("redis://" + host + ":" + port);
         return Redisson.create(config);
     }
 

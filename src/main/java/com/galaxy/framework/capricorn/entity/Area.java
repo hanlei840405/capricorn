@@ -35,4 +35,6 @@ public class Area extends BaseEntity implements Serializable {
     private String userCode;
 
     private String remark;
+
+    private String username;
 }

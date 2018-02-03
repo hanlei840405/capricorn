@@ -35,7 +35,7 @@ public class AreaService {
         return areaMapper.findAll(search);
     }
 
-    public PageInfo<Area> pageInfo(Map<String, Object> search, int pageNo, int pageSize) {
+    public PageInfo<Area> page(Map<String, Object> search, int pageNo, int pageSize) {
         PageInfo<Area> pageInfo = PageHelper.startPage(pageNo, pageSize).doSelectPageInfo(() -> findAll(search));
         return pageInfo;
     }
@@ -57,6 +57,28 @@ public class AreaService {
     public void update(Area area) {
         try {
             areaMapper.updateByPrimaryKey(area);
+        } catch (Exception e) {
+            throw new UpdateException();
+        }
+    }
+
+    @Transactional
+    public int deleteByCode(String code) {
+        Area area = get(code);
+        try {
+            area.setStatus("删除");
+            return areaMapper.updateByPrimaryKey(area);
+        } catch (Exception e) {
+            throw new UpdateException();
+        }
+    }
+
+    @Transactional
+    public int reuse(String code) {
+        Area area = get(code);
+        try {
+            area.setStatus("启用");
+            return areaMapper.updateByPrimaryKey(area);
         } catch (Exception e) {
             throw new UpdateException();
         }

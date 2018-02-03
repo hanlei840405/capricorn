@@ -35,7 +35,7 @@ public class FloorService {
         return floorMapper.findAll(search);
     }
 
-    public PageInfo<Floor> pageInfo(Map<String, Object> search, int pageNo, int pageSize) {
+    public PageInfo<Floor> page(Map<String, Object> search, int pageNo, int pageSize) {
         PageInfo<Floor> pageInfo = PageHelper.startPage(pageNo, pageSize).doSelectPageInfo(() -> findAll(search));
         return pageInfo;
     }
@@ -57,6 +57,28 @@ public class FloorService {
     public void update(Floor floor) {
         try {
             floorMapper.updateByPrimaryKey(floor);
+        } catch (Exception e) {
+            throw new UpdateException();
+        }
+    }
+
+    @Transactional
+    public int deleteByCode(String code) {
+        Floor floor = get(code);
+        try {
+            floor.setStatus("删除");
+            return floorMapper.updateByPrimaryKey(floor);
+        } catch (Exception e) {
+            throw new UpdateException();
+        }
+    }
+
+    @Transactional
+    public int reuse(String code) {
+        Floor floor = get(code);
+        try {
+            floor.setStatus("启用");
+            return floorMapper.updateByPrimaryKey(floor);
         } catch (Exception e) {
             throw new UpdateException();
         }

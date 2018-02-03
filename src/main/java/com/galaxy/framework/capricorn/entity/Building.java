@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @author jesse.han
@@ -30,4 +29,6 @@ public class Building extends BaseEntity implements Serializable {
     private BigDecimal height;
 
     private String remark;
+
+    private String locationName;
 }
