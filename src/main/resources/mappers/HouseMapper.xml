@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.galaxy.framework.capricorn.mapper.HousePropertyMapper">
-    <resultMap id="BaseResultMap" type="com.galaxy.framework.capricorn.entity.HouseProperty">
+<mapper namespace="com.galaxy.framework.capricorn.mapper.HouseMapper">
+    <resultMap id="BaseResultMap" type="com.galaxy.framework.capricorn.entity.House">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="position" jdbcType="VARCHAR" property="position"/>
         <result column="acreage" jdbcType="DECIMAL" property="acreage"/>
         <result column="height" jdbcType="DECIMAL" property="height"/>
         <result column="public_area" jdbcType="DECIMAL" property="publicArea"/>
@@ -18,11 +17,10 @@
         <result column="modified" jdbcType="TIMESTAMP" property="modified"/>
         <result column="version" jdbcType="TINYINT" property="version"/>
     </resultMap>
-    <resultMap id="RelationResultMap" type="com.galaxy.framework.capricorn.entity.HouseProperty">
+    <resultMap id="RelationResultMap" type="com.galaxy.framework.capricorn.entity.House">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="position" jdbcType="VARCHAR" property="position"/>
         <result column="acreage" jdbcType="DECIMAL" property="acreage"/>
         <result column="height" jdbcType="DECIMAL" property="height"/>
         <result column="public_area" jdbcType="DECIMAL" property="publicArea"/>
@@ -38,6 +36,7 @@
                      javaType="com.galaxy.framework.capricorn.entity.Area">
             <id column="area_code" property="code" jdbcType="VARCHAR"/>
             <result column="area_name" property="name" jdbcType="VARCHAR"/>
+            <result column="user_code" property="userCode" jdbcType="VARCHAR"/>
             <association property="floor" column="floor_code"
                          javaType="com.galaxy.framework.capricorn.entity.Floor">
                 <id column="floor_code" property="code" jdbcType="VARCHAR"/>
@@ -46,57 +45,56 @@
                              javaType="com.galaxy.framework.capricorn.entity.Building">
                     <id column="building_code" property="code" jdbcType="BIGINT"/>
                     <result column="building_name" property="name" jdbcType="VARCHAR"/>
+                    <result column="location_code" property="locationCode" jdbcType="VARCHAR"/>
                 </association>
             </association>
         </association>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, name, position, acreage, height, public_area, area_code, remark, status, 
+    id, code, name, acreage, height, public_area, area_code, remark, status,
     creator, created, modifier, modified, version
   </sql>
     <sql id="Relation_Column_List">
-        t1.id, t1.code, t1.name, t1.position, t1.acreage, t1.height, t1.public_area, t1.area_code, t1.remark, t1.status, t1.creator, t1.created, t1.modifier,
-        t1.modified, t1.version, t2.code as area_code, t2.name as area_name, t3.code as floor_code, t3.name as floor_name, t4.code as building_code, t4.name as building_name
+        t1.id, t1.code, t1.name, t1.acreage, t1.height, t1.public_area, t1.area_code, t1.remark, t1.status, t1.creator, t1.created, t1.modifier,
+        t1.modified, t1.version, t2.code as area_code, t2.name as area_name, t3.code as floor_code, t3.name as floor_name, t4.code as building_code,
+        t4.name as building_name, t4.location_code, t2.user_code
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from basic_house_property
+        from basic_house
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from basic_house_property
+    delete from basic_house
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.galaxy.framework.capricorn.entity.HouseProperty">
+    <insert id="insert" parameterType="com.galaxy.framework.capricorn.entity.House">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into basic_house_property (code, name, position,
+        insert into basic_house (code, name,
         acreage, height, public_area,
         area_code, remark, status,
         creator, created, modifier,
         modified, version)
-        values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR},
+        values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
         #{acreage,jdbcType=DECIMAL}, #{height,jdbcType=DECIMAL}, #{publicArea,jdbcType=DECIMAL},
         #{areaCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
         #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
         #{modified,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT})
     </insert>
-    <insert id="insertSelective" parameterType="com.galaxy.framework.capricorn.entity.HouseProperty">
+    <insert id="insertSelective" parameterType="com.galaxy.framework.capricorn.entity.House">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into basic_house_property
+        insert into basic_house
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="code != null">
                 code,
             </if>
             <if test="name != null">
                 name,
-            </if>
-            <if test="position != null">
-                position,
             </if>
             <if test="acreage != null">
                 acreage,
@@ -139,9 +137,6 @@
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},
             </if>
-            <if test="position != null">
-                #{position,jdbcType=VARCHAR},
-            </if>
             <if test="acreage != null">
                 #{acreage,jdbcType=DECIMAL},
             </if>
@@ -177,17 +172,14 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.galaxy.framework.capricorn.entity.HouseProperty">
-        update basic_house_property
+    <update id="updateByPrimaryKeySelective" parameterType="com.galaxy.framework.capricorn.entity.House">
+        update basic_house
         <set>
             <if test="code != null">
                 code = #{code,jdbcType=VARCHAR},
             </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="position != null">
-                position = #{position,jdbcType=VARCHAR},
             </if>
             <if test="acreage != null">
                 acreage = #{acreage,jdbcType=DECIMAL},
@@ -225,11 +217,10 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.galaxy.framework.capricorn.entity.HouseProperty">
-    update basic_house_property
+    <update id="updateByPrimaryKey" parameterType="com.galaxy.framework.capricorn.entity.House">
+    update basic_house
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      position = #{position,jdbcType=VARCHAR},
       acreage = #{acreage,jdbcType=DECIMAL},
       height = #{height,jdbcType=DECIMAL},
       public_area = #{publicArea,jdbcType=DECIMAL},
@@ -246,7 +237,7 @@
     <select id="selectByCode" parameterType="string" resultMap="RelationResultMap">
         select
         <include refid="Relation_Column_List"/>
-        from basic_house_property t1
+        from basic_house t1
         left join basic_area t2 on t1.area_code=t2.code
         left join basic_floor t3 on t2.floor_code=t3.code
         left join basic_building t4 on t3.building_code = t4.code
@@ -255,7 +246,7 @@
     <select id="findAll" parameterType="map" resultMap="RelationResultMap">
         select
         <include refid="Relation_Column_List"/>
-        from basic_house_property t1
+        from basic_house t1
         left join basic_area t2 on t1.area_code=t2.code
         left join basic_floor t3 on t2.floor_code=t3.code
         left join basic_building t4 on t3.building_code = t4.code
@@ -268,6 +259,9 @@
         </if>
         <if test="buildingCode">
             and t3.building_code=#{bulidingCode}
+        </if>
+        <if test="locationCode">
+            and t3.location_code=#{locationCode}
         </if>
         <if test="status">
             and t1.status=#{status}

@@ -12,11 +12,13 @@ import com.galaxy.framework.pisces.vo.aquarius.LocationVo;
 import com.galaxy.framework.pisces.vo.aquarius.UserVo;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,9 +72,12 @@ public class AreaController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/findAll")
-    public List<Area> findAll(String status) {
-        List<Area> departments = areaService.findAll(ImmutableMap.of("status", status));
-        return departments;
+    public List<Area> findAll(String floorCode, String status) {
+        Map<String, Object> search = Maps.newHashMap();
+        search.put("floorCode", floorCode);
+        search.put("status", status);
+        List<Area> areas = areaService.findAll(search);
+        return areas;
     }
 
     @CrossOrigin(origins = "http://localhost:3000")

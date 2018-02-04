@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-02-03 01:36:11
+Date: 2018-02-04 23:37:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,12 @@ CREATE TABLE `basic_area` (
   `version` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of basic_area
+-- ----------------------------
+INSERT INTO `basic_area` VALUES ('1', '00000001', '爱的色放', '1231.00', '2.00', '00000001', '00000001', null, '启用', null, null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for basic_building
@@ -59,7 +64,12 @@ CREATE TABLE `basic_building` (
   `version` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of basic_building
+-- ----------------------------
+INSERT INTO `basic_building` VALUES ('1', '00000001', '啊士大夫但是', '00000001', '阿凡达但是', '232.00', '11.00', null, '启用', null, null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for basic_dictionary
@@ -78,6 +88,10 @@ CREATE TABLE `basic_dictionary` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_UNIQUE` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of basic_dictionary
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for basic_dictionary_item
@@ -99,6 +113,10 @@ CREATE TABLE `basic_dictionary_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Records of basic_dictionary_item
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for basic_floor
 -- ----------------------------
 DROP TABLE IF EXISTS `basic_floor`;
@@ -118,17 +136,21 @@ CREATE TABLE `basic_floor` (
   `version` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for basic_house_property
+-- Records of basic_floor
 -- ----------------------------
-DROP TABLE IF EXISTS `basic_house_property`;
-CREATE TABLE `basic_house_property` (
+INSERT INTO `basic_floor` VALUES ('1', '00000001', '啊士大夫大师傅', '213.00', '111.00', '00000001', null, '启用', null, null, null, null, '0');
+
+-- ----------------------------
+-- Table structure for basic_house
+-- ----------------------------
+DROP TABLE IF EXISTS `basic_house`;
+CREATE TABLE `basic_house` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `code` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `position` varchar(255) DEFAULT NULL,
   `acreage` decimal(10,2) DEFAULT NULL,
   `height` decimal(10,2) DEFAULT NULL,
   `public_area` decimal(10,2) DEFAULT NULL,
@@ -142,7 +164,12 @@ CREATE TABLE `basic_house_property` (
   `version` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_UNIQUE` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of basic_house
+-- ----------------------------
+INSERT INTO `basic_house` VALUES ('1', '00000003', '士大夫', '121212.00', '2.00', '12.00', '00000001', null, '启用', null, null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for basic_owner
@@ -168,10 +195,14 @@ CREATE TABLE `basic_owner` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for basic_owner_house_property
+-- Records of basic_owner
 -- ----------------------------
-DROP TABLE IF EXISTS `basic_owner_house_property`;
-CREATE TABLE `basic_owner_house_property` (
+
+-- ----------------------------
+-- Table structure for basic_owner_house
+-- ----------------------------
+DROP TABLE IF EXISTS `basic_owner_house`;
+CREATE TABLE `basic_owner_house` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `owner_code` varchar(255) NOT NULL,
   `house_property_code` varchar(255) NOT NULL,
@@ -187,3 +218,7 @@ CREATE TABLE `basic_owner_house_property` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_UNIQUE` (`owner_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of basic_owner_house
+-- ----------------------------

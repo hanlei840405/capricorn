@@ -29,7 +29,7 @@ logging:
     com:
       galaxy:
         framework:
-          aquarius:
+          capricorn:
             mapper: debug
 eureka:
   client:
