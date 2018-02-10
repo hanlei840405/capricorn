@@ -35,7 +35,7 @@ public class OwnerService {
         return ownerMapper.findAll(search);
     }
 
-    public PageInfo<Owner> pageInfo(Map<String, Object> search, int pageNo, int pageSize) {
+    public PageInfo<Owner> page(Map<String, Object> search, int pageNo, int pageSize) {
         PageInfo<Owner> pageInfo = PageHelper.startPage(pageNo, pageSize).doSelectPageInfo(() -> findAll(search));
         return pageInfo;
     }
@@ -57,6 +57,28 @@ public class OwnerService {
     public void update(Owner owner) {
         try {
             ownerMapper.updateByPrimaryKey(owner);
+        } catch (Exception e) {
+            throw new UpdateException();
+        }
+    }
+
+    @Transactional
+    public int deleteByCode(String code) {
+        Owner owner = get(code);
+        try {
+            owner.setStatus("删除");
+            return ownerMapper.updateByPrimaryKey(owner);
+        } catch (Exception e) {
+            throw new UpdateException();
+        }
+    }
+
+    @Transactional
+    public int reuse(String code) {
+        Owner owner = get(code);
+        try {
+            owner.setStatus("启用");
+            return ownerMapper.updateByPrimaryKey(owner);
         } catch (Exception e) {
             throw new UpdateException();
         }
