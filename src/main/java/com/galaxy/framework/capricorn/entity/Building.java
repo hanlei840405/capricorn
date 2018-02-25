@@ -22,6 +22,8 @@ public class Building extends BaseEntity implements Serializable {
 
     private String locationCode;
 
+    private String locationName;
+
     private String address;
 
     private BigDecimal acreage;
@@ -29,6 +31,4 @@ public class Building extends BaseEntity implements Serializable {
     private BigDecimal height;
 
     private String remark;
-
-    private String locationName;
 }

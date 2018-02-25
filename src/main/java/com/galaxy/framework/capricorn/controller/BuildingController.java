@@ -8,7 +8,9 @@ import com.galaxy.framework.capricorn.service.BuildingService;
 import com.galaxy.framework.pisces.exception.db.NotExistException;
 import com.galaxy.framework.pisces.exception.rule.EmptyException;
 import com.galaxy.framework.pisces.vo.aquarius.LocationVo;
+import com.galaxy.framework.pisces.vo.capricorn.BuildingVo;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +33,13 @@ public class BuildingController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping("get")
-    public Building get(String code) {
+    @RequestMapping("/code")
+    public BuildingVo getByCode(String code) {
         Building building = buildingService.get(code);
         if (building != null) {
-            return building;
+            BuildingVo buildingVo = new BuildingVo();
+            BeanUtils.copyProperties(building, buildingVo, "id");
+            return buildingVo;
         }
         throw new NotExistException();
     }

@@ -10,9 +10,11 @@ import com.galaxy.framework.pisces.exception.db.NotExistException;
 import com.galaxy.framework.pisces.exception.rule.EmptyException;
 import com.galaxy.framework.pisces.vo.aquarius.LocationVo;
 import com.galaxy.framework.pisces.vo.aquarius.UserVo;
+import com.galaxy.framework.pisces.vo.capricorn.AreaVo;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +40,16 @@ public class AreaController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping("get")
-    public Area get(String code) {
+    @RequestMapping("/code")
+    public AreaVo getByCode(String code) {
         Area area = areaService.get(code);
         if (area != null) {
-            return area;
+            AreaVo areaVo = new AreaVo();
+            BeanUtils.copyProperties(area, areaVo, "id", "floor");
+            if (area.getFloor() != null) {
+                areaVo.setFloorName(area.getFloor().getName());
+            }
+            return areaVo;
         }
         throw new NotExistException();
     }

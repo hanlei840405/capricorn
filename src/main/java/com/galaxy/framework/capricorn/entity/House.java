@@ -32,4 +32,6 @@ public class House extends BaseEntity implements Serializable {
     private String remark;
 
     private Area area;
+
+    private  BigDecimal rent;
 }

@@ -26,7 +26,7 @@ public class OwnerService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Owner get(String code) {
+    public Owner selectByCode(String code) {
         return ownerMapper.selectByCode(code);
     }
 
@@ -64,7 +64,7 @@ public class OwnerService {
 
     @Transactional
     public int deleteByCode(String code) {
-        Owner owner = get(code);
+        Owner owner = selectByCode(code);
         try {
             owner.setStatus("删除");
             return ownerMapper.updateByPrimaryKey(owner);
@@ -75,7 +75,7 @@ public class OwnerService {
 
     @Transactional
     public int reuse(String code) {
-        Owner owner = get(code);
+        Owner owner = selectByCode(code);
         try {
             owner.setStatus("启用");
             return ownerMapper.updateByPrimaryKey(owner);

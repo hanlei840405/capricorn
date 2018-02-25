@@ -12,10 +12,11 @@ spring:
   redis:
     host: 127.0.0.1
     port: 32769
-#  rabbitmq:
-#    host: eureka-zuul
-#    username: root
-#    password: root
+  rabbitmq:
+    host: 127.0.0.1
+    port: 32771
+    username: root
+    password: root
   thymeleaf:
     cache: false
 server:

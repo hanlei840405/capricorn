@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 
@@ -29,4 +30,6 @@ public class Owner extends BaseEntity implements Serializable {
     private String birthday;
 
     private String headImg;
+
+    private List<House> houses;
 }

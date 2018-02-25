@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.galaxy.framework.capricorn.entity.DictionaryItem">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="dictionary_code" jdbcType="VARCHAR" property="dictionaryCode" />
     <result column="status" jdbcType="VARCHAR" property="status" />
@@ -14,7 +15,7 @@
     <result column="version" jdbcType="TINYINT" property="version" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, dictionary_code, status, creator, created, modifier, modified, version
+    id, code, `key`, name, dictionary_code, status, creator, created, modifier, modified, version
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -30,11 +31,11 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into basic_dictionary_item (code, name, dictionary_code,
+    insert into basic_dictionary_item (code, `key`, name, dictionary_code,
       status, creator, created, 
       modifier, modified, version
       )
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{dictionaryCode,jdbcType=VARCHAR}, 
+    values (#{code,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{dictionaryCode,jdbcType=VARCHAR},
       #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
       #{modifier,jdbcType=VARCHAR}, #{modified,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT}
       )
@@ -47,6 +48,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="code != null">
         code,
+      </if>
+      <if test="key != null">
+        `key`,
       </if>
       <if test="name != null">
         name,
@@ -76,6 +80,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="code != null">
         #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null">
+        #{key,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -112,6 +119,9 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="key != null">
+        `key` = #{key,jdbcType=VARCHAR},
+      </if>
       <if test="dictionaryCode != null">
         dictionary_code = #{dictionaryCode,jdbcType=VARCHAR},
       </if>
@@ -139,6 +149,7 @@
   <update id="updateByPrimaryKey" parameterType="com.galaxy.framework.capricorn.entity.DictionaryItem">
     update basic_dictionary_item
     set code = #{code,jdbcType=VARCHAR},
+      `key` = #{key,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       dictionary_code = #{dictionaryCode,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
@@ -149,4 +160,32 @@
       version = #{version,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByCode" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from basic_dictionary_item
+    where code=#{code}
+  </select>
+  <select id="selectByKey" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from basic_dictionary_item
+    where `key`=#{key}
+  </select>
+  <select id="findByDictionary" parameterType="string" resultMap="BaseResultMap">
+    select
+    t1.id, t1.code, t1.`key`, t1.name, t1.dictionary_code, t1.status, t1.creator, t1.created, t1.modifier, t1.modified, t1.version
+    from basic_dictionary_item t1
+    inner join basic_dictionary t2 on t1.dictionary_code = t2.code
+    where 1=1
+    <if test="dictionaryCode!=null">
+      and t2.code =#{dictionaryCode}
+    </if>
+    <if test="dictionaryKey!=null">
+      and t2.`key`=#{dictionaryKey}
+    </if>
+    <if test="status!=null">
+      and t2.status=#{status}
+    </if>
+  </select>
 </mapper>

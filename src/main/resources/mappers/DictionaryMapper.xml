@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.galaxy.framework.capricorn.entity.Dictionary">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -13,7 +14,7 @@
     <result column="version" jdbcType="TINYINT" property="version" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, status, creator, created, modifier, modified, version
+    id, code, `key`, name, status, creator, created, modifier, modified, version
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -29,10 +30,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into basic_dictionary (code, name, status,
+    insert into basic_dictionary (code, `key`, name, status,
       creator, created, modifier, 
       modified, version)
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+    values (#{code,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
       #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
       #{modified,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT})
   </insert>
@@ -44,6 +45,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="code != null">
         code,
+      </if>
+      <if test="key != null">
+        `key`,
       </if>
       <if test="name != null">
         name,
@@ -70,6 +74,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="code != null">
         #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="key != null">
+        #{key,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -100,6 +107,9 @@
       <if test="code != null">
         code = #{code,jdbcType=VARCHAR},
       </if>
+      <if test="key != null">
+        `key` = #{key,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -127,6 +137,7 @@
   <update id="updateByPrimaryKey" parameterType="com.galaxy.framework.capricorn.entity.Dictionary">
     update basic_dictionary
     set code = #{code,jdbcType=VARCHAR},
+      `key` = #{key,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
@@ -136,4 +147,28 @@
       version = #{version,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByCode" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from basic_dictionary
+    where code=#{code}
+  </select>
+  <select id="selectByKey" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from basic_dictionary
+    where `key`=#{key}
+  </select>
+  <select id="findAll" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from basic_dictionary
+    where 1=1
+    <if test="name!=null">
+      and name like concat(#{code},'%')
+    </if>
+    <if test="status!=null">
+      and status=#{status}
+    </if>
+  </select>
 </mapper>

@@ -8,6 +8,7 @@
         <result column="acreage" jdbcType="DECIMAL" property="acreage"/>
         <result column="height" jdbcType="DECIMAL" property="height"/>
         <result column="public_area" jdbcType="DECIMAL" property="publicArea"/>
+        <result column="rent" jdbcType="DECIMAL" property="rent"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
@@ -24,6 +25,7 @@
         <result column="acreage" jdbcType="DECIMAL" property="acreage"/>
         <result column="height" jdbcType="DECIMAL" property="height"/>
         <result column="public_area" jdbcType="DECIMAL" property="publicArea"/>
+        <result column="rent" jdbcType="DECIMAL" property="rent"/>
         <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
@@ -51,11 +53,11 @@
         </association>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, name, acreage, height, public_area, area_code, remark, status,
+    id, code, name, acreage, height, public_area, rent, area_code, remark, status,
     creator, created, modifier, modified, version
   </sql>
     <sql id="Relation_Column_List">
-        t1.id, t1.code, t1.name, t1.acreage, t1.height, t1.public_area, t1.area_code, t1.remark, t1.status, t1.creator, t1.created, t1.modifier,
+        t1.id, t1.code, t1.name, t1.acreage, t1.height, t1.public_area, t1.rent, t1.area_code, t1.remark, t1.status, t1.creator, t1.created, t1.modifier,
         t1.modified, t1.version, t2.code as area_code, t2.name as area_name, t3.code as floor_code, t3.name as floor_name, t4.code as building_code,
         t4.name as building_name, t4.location_code, t2.user_code
     </sql>
@@ -74,12 +76,12 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into basic_house (code, name,
-        acreage, height, public_area,
+        acreage, height, public_area, rent,
         area_code, remark, status,
         creator, created, modifier,
         modified, version)
         values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-        #{acreage,jdbcType=DECIMAL}, #{height,jdbcType=DECIMAL}, #{publicArea,jdbcType=DECIMAL},
+        #{acreage,jdbcType=DECIMAL}, #{height,jdbcType=DECIMAL}, #{publicArea,jdbcType=DECIMAL},#{rent,jdbcType=DECIMAL},
         #{areaCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
         #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
         #{modified,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT})
@@ -104,6 +106,9 @@
             </if>
             <if test="publicArea != null">
                 public_area,
+            </if>
+            <if test="rent != null">
+                rent,
             </if>
             <if test="areaCode != null">
                 area_code,
@@ -145,6 +150,9 @@
             </if>
             <if test="publicArea != null">
                 #{publicArea,jdbcType=DECIMAL},
+            </if>
+            <if test="rent != null">
+                #{rent,jdbcType=DECIMAL},
             </if>
             <if test="areaCode != null">
                 #{areaCode,jdbcType=VARCHAR},
@@ -190,6 +198,9 @@
             <if test="publicArea != null">
                 public_area = #{publicArea,jdbcType=DECIMAL},
             </if>
+            <if test="rent != null">
+                rent = #{rent,jdbcType=DECIMAL},
+            </if>
             <if test="areaCode != null">
                 area_code = #{areaCode,jdbcType=VARCHAR},
             </if>
@@ -224,6 +235,7 @@
       acreage = #{acreage,jdbcType=DECIMAL},
       height = #{height,jdbcType=DECIMAL},
       public_area = #{publicArea,jdbcType=DECIMAL},
+      rent = #{rent,jdbcType=DECIMAL},
       area_code = #{areaCode,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
@@ -251,19 +263,19 @@
         left join basic_floor t3 on t2.floor_code=t3.code
         left join basic_building t4 on t3.building_code = t4.code
         where 1=1
-        <if test="areaCode">
+        <if test="areaCode != null">
             and t1.area_code=#{areaCode}
         </if>
-        <if test="floorCode">
-            and t2.floor_code=#{floor_code}
+        <if test="floorCode != null">
+            and t2.floor_code=#{floorCode}
         </if>
-        <if test="buildingCode">
-            and t3.building_code=#{bulidingCode}
+        <if test="buildingCode != null">
+            and t3.building_code=#{buildingCode}
         </if>
-        <if test="locationCode">
+        <if test="locationCode != null">
             and t3.location_code=#{locationCode}
         </if>
-        <if test="status">
+        <if test="status != null">
             and t1.status=#{status}
         </if>
     </select>

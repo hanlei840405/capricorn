@@ -8,8 +8,10 @@ import com.galaxy.framework.capricorn.service.FloorService;
 import com.galaxy.framework.pisces.exception.db.NotExistException;
 import com.galaxy.framework.pisces.exception.rule.EmptyException;
 import com.galaxy.framework.pisces.vo.aquarius.LocationVo;
+import com.galaxy.framework.pisces.vo.capricorn.FloorVo;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.ImmutableMap;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +34,16 @@ public class FloorController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping("get")
-    public Floor get(String code) {
+    @RequestMapping("/code")
+    public FloorVo getByCode(String code) {
         Floor floor = floorService.get(code);
         if (floor != null) {
-            return floor;
+            FloorVo floorVo = new FloorVo();
+            BeanUtils.copyProperties(floor, floorVo,"id", "building");
+            if (floor.getBuilding() != null) {
+                floorVo.setBuildingName(floor.getBuilding().getName());
+            }
+            return floorVo;
         }
         throw new NotExistException();
     }

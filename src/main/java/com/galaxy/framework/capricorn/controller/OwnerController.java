@@ -6,7 +6,10 @@ import com.galaxy.framework.capricorn.entity.Owner;
 import com.galaxy.framework.capricorn.service.OwnerService;
 import com.galaxy.framework.pisces.exception.db.NotExistException;
 import com.galaxy.framework.pisces.exception.rule.EmptyException;
+import com.galaxy.framework.pisces.util.FileUtil;
+import com.galaxy.framework.pisces.vo.capricorn.OwnerVo;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("owner")
 public class OwnerController {
 
     @Autowired
@@ -25,11 +29,13 @@ public class OwnerController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping("get")
-    public Owner get(String code) {
-        Owner owner = ownerService.get(code);
+    @RequestMapping("/code")
+    public OwnerVo getByCode(String code) {
+        Owner owner = ownerService.selectByCode(code);
         if (owner != null) {
-            return owner;
+            OwnerVo ownerVo = new OwnerVo();
+            BeanUtils.copyProperties(owner, ownerVo,"id", "houses");
+            return ownerVo;
         }
         throw new NotExistException();
     }
@@ -80,5 +86,24 @@ public class OwnerController {
             return ownerService.reuse(owner.getCode());
         }
         throw new EmptyException();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/upload")
+    public int upload(@RequestBody Map<String, String> userInfo) throws IOException {
+        String headImg = userInfo.get(("headImg"));
+
+        String code = userInfo.get(("code"));
+        if (StringUtils.isEmpty(headImg)) {
+            throw new EmptyException("图片为空");
+        } else if (StringUtils.isEmpty(code)) {
+            throw new EmptyException("图片所属人为空");
+        } else {
+            String flieName = FileUtil.writeFromBase64(headImg, "basic/owner", code);
+            Owner owner = ownerService.selectByCode(code);
+            owner.setHeadImg(flieName);
+            ownerService.update(owner);
+        }
+        return 200;
     }
 }

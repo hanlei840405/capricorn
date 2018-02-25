@@ -17,6 +17,8 @@ public class DictionaryItem extends BaseEntity implements Serializable {
 
     private String code;
 
+    private String key;
+
     private String name;
 
     private String dictionaryCode;

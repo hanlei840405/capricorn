@@ -18,5 +18,7 @@ public class Dictionary extends BaseEntity implements Serializable {
 
     private String code;
 
+    private String key;
+
     private String name;
 }

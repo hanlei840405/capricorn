@@ -10,7 +10,11 @@ import com.galaxy.framework.pisces.exception.db.NotExistException;
 import com.galaxy.framework.pisces.exception.rule.EmptyException;
 import com.galaxy.framework.pisces.vo.aquarius.LocationVo;
 import com.galaxy.framework.pisces.vo.aquarius.UserVo;
+import com.galaxy.framework.pisces.vo.capricorn.HouseVo;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +40,32 @@ public class HouseController {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping("get")
-    public House get(String code) {
+    @RequestMapping("/code")
+    public HouseVo getByCode(String code) {
         House house = houseService.get(code);
         if (house != null) {
-            return house;
+            HouseVo houseVo = new HouseVo();
+            BeanUtils.copyProperties(house, houseVo, "id", "area");
+            if (house.getArea() != null) {
+                houseVo.setAreaName(house.getArea().getName());
+            }
+            return houseVo;
         }
         throw new NotExistException();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @RequestMapping("/floor")
+    public List<HouseVo> findByFloor(String floorCode) {
+        Map<String,Object> search = ImmutableMap.of("floorCode", floorCode);
+        List<House> houses = houseService.findAll(search);
+        List<HouseVo> houseVos = Lists.newArrayList();
+        houses.forEach(house -> {
+            HouseVo houseVo = new HouseVo();
+            BeanUtils.copyProperties(house, houseVo, "id", "area");
+            houseVos.add(houseVo);
+        });
+        return houseVos;
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -85,7 +108,7 @@ public class HouseController {
     @PostMapping("/save")
     public House save(@RequestBody House house) {
         if (house != null) {
-            house.setStatus("启用");
+            house.setStatus("有效");
             houseService.save(house);
             return house;
         }
